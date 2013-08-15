@@ -1,4 +1,5 @@
 class CartsController < ApplicationController
+   skip_before_action :authorize, only: [:create, :update, :destroy]
   # GET /carts
   # GET /carts.xml
   def index
@@ -86,4 +87,9 @@ class CartsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+   def invalid_cart
+      logger.error "Attempt to access invalid cart #{params[:id]}"
+      redirect_to store_url, notice: 'Invalid cart'
+   end
 end
